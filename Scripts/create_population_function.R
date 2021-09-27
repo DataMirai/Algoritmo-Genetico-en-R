@@ -1,12 +1,14 @@
-#################################################################################################
+# ////////////////////////////////////////////////////////////////////
 # Create population function ----
-#################################################################################################
+# ////////////////////////////////////////////////////////////////////
+
 create_population <- function(
   n_population, 
   n_variables, 
   inf_limit = NULL,
   sup_limit = NULL, 
   verbose = TRUE) {
+  require("tidyverse")
   
   ####
   # Documentation ----
@@ -16,7 +18,7 @@ create_population <- function(
   # The range of possible values for each variable can be bounded.
   
   # Arguments
-  # ============================================================================
+  # ////////////////////////////////////////////////////////////////////////////////
   # n_population: Number of total amount of individuals.
   # n_variables:  Number of columns to fulfill for each individual.
   # inf_limit:    Vector with the lower limit of each variable. 
@@ -28,7 +30,7 @@ create_population <- function(
   # verbose:      Display information of the process on the screen. 
   #   
   # Returns
-  # ============================================================================
+  # /////////////////////////////////////////////////////////////////////////////////
   # A matrix of size n_population x n_variables representing a population.
   
   
@@ -97,38 +99,33 @@ create_population <- function(
     sup_limit[is.na(sup_limit)] <- 10^3
   }
   
+
+  
   ####
   # Create Population matrix ----
   ####
   
-  # Final Matrix creation where to store the generated individuals.
-  population <- matrix(data = NA, nrow = n_population, ncol = n_variables)
+  args <- list(n_population, inf_limit, sup_limit)
   
-  # Loop for individual creation
-  for (i in 1:n_population) {
-    # A vector full of NA is created representing an individual
-    individual <- rep(NA, times = n_variables)
-    
-    for (j in 1:n_variables) {
-      # For each position in the individual vector, it is created a random value 
-      # according the boundaries restrictions
-      
-      individual[j] <- runif(n = 1, min = inf_limit[j], max = sup_limit[j])
-    }
-    # Add the individual to the population
-    population[i, ] <- individual
-  }
+  population<- args %>% 
+    pmap(runif) %>% 
+    unlist(.) %>% 
+    matrix(., ncol= n_variables, byrow = F) 
+  
   cat("\n")
+  
   ####
   # Stored information in the attributes ----
   ####
-  attr(population, 'Date_creation')    <- Sys.time()
+  attr(population, 'Date_creation') <- Sys.time()
   attr(population, 'n_individuals') <- n_population
-  attr(population, "class") <- c("matrix", "population")
+  attr(population, "class")         <- c("matrix", "population")
   
+  
+
   if (verbose) {
     cat("Initial population created", "\n")
-    cat("------------------------", "\n")
+    cat("--------------------------", "\n")
     cat("Date creation:", as.character(Sys.time()), "\n")
     cat("Individuals number =", n_population, "\n")
     cat("Lower limits of each variable =", paste(inf_limit, collapse = ", "), "\n")
@@ -139,12 +136,7 @@ create_population <- function(
   return(population)
 }
 
-aaa<-create_population(
-  n_population=100, 
-  n_variables=10, 
-  inf_limit = NULL,
-  sup_limit = NULL, 
-  verbose = TRUE )
 
 
-  
+create_population(10000, 15, NULL, NULL, verbose=T)
+ 
