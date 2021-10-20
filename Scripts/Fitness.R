@@ -6,8 +6,8 @@ Individual_fitness_calculation <- function(
   
   # This function returns the fitness of EACH individual of a population.
   
-  # ARGUMENTS
   # //////////////////////////////////////////////////////////////////////////////
+  # ARGUMENTS
   # individual:           Vector with the data of individuals.
   #                       The order of the data must coincide with
   #                       with the one for the individuals column's.
@@ -20,9 +20,7 @@ Individual_fitness_calculation <- function(
   #                       Minimize: the individual has higher fitness the LOWER  the value of the objective function
   # verbose:              Display information on screen.
   #
-  # Output
-  # //////////////////////////////////////////////////////////////////////////////
-  # The individual fitness for the chosen function.
+  # Output: The individual fitness for the chosen function.
   
   # INITIAL COMPROBATIONS
   # //////////////////////////////////////////////////////////////////////////////
@@ -47,9 +45,9 @@ Individual_fitness_calculation <- function(
   if (verbose) {
     cat("The individual has been evaluated", "\n")
     cat("-----------------------------", "\n")
-    cat("Optimization =", optimization, "\n")
-    cat("Individual   =", paste(individual, collapse = " "), "\n")
-    cat("Fitness      =", fitness, "\n")
+    cat("Optimization    =", optimization, "\n")
+    cat("Ind_conditions  =", paste("(",individual,")", collapse = ","), "\n")
+    cat("Fitness         =", fitness, "\n")
     cat("\n")
   }
   print(fitness)
@@ -66,7 +64,7 @@ funcion_test <- function(x1, x2) {
   return(x1 + x2)
 }
 
-fitness <- Individual_fitness_calculation(
+fitness_ind <- Individual_fitness_calculation(
   individual        = c(10, 10),
   objective_funtion = funcion_test,
   optimization      = "maximize",
@@ -74,6 +72,26 @@ fitness <- Individual_fitness_calculation(
 )
 
 
+
+
+
+popu<- create_population(
+  n_population = 1000,
+  n_variables = 5,
+  inf_limit = NULL,
+  sup_limit = NULL,
+  verbose=T) 
+
+popu %>%
+  as.data.frame() %>%
+  mutate("n_ind" = 1:dim(.)[1]) %>%
+  select("n_ind", everything() ) %>%
+  nest(-n_ind) %>%
+  mutate( )
+
+
+test1 <- apply(popu[,1:2], 1, Individual_fitness_calculation , funcion_test, "minimize", T )
+test2 <- apply(popu[,1:2], 1, Individual_fitness_calculation , funcion_test, "maximize", F )
 
 
 # //////////////////////////////////////////////////////////

@@ -137,6 +137,9 @@ create_population <- function(
 }
 
 
-
-create_population(10000, 15, NULL, NULL, verbose=T)
- 
+create_population(
+  n_population = 1000,
+  n_variables = 15,
+  inf_limit = NULL,
+  sup_limit = NULL,
+  verbose=T)
