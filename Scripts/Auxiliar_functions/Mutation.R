@@ -1,12 +1,19 @@
 
+c(5,1234)
+A <- c(1:100)
+B <- c(1:100)
 
-rev(intToBits(5))
+sample(1:100, 1)
+sample(1:100, 1)
+rev(intToBits(64))
 
+rev(intToBits(22))
 
-x<-as.integer(rev(intToBits(5)))
+x <- as.integer(rev(intToBits(5)))
 x
 
 mutation_bit <- function(x, mutation_rate = 0.025){
+  x <- as.integer(rev(intToBits(5)))
   
   succes_mutation <- rbinom(1,1,mutation_rate)
   if(succes_mutation){
