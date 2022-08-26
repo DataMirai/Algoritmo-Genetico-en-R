@@ -1,1 +1,1 @@
-# Algoritmo-Genetico-en-R
+# genetic algorithm in R
